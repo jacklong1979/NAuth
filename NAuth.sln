@@ -5,6 +5,10 @@ VisualStudioVersion = 15.0.27130.2020
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NAuth.OIDCServer", "NAuth.OIDCServer\NAuth.OIDCServer.csproj", "{3CA7331E-F8AB-4A86-A869-D1D9EADD1E94}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NAuth.ResourceServer", "NAuth.ResourceServer\NAuth.ResourceServer.csproj", "{6C7117EF-1B70-4C56-AA5E-768B45A59E50}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NAuth.ClientServer", "NAuth.ClientServer\NAuth.ClientServer.csproj", "{F1D5E314-EEA3-4EF4-AC55-24D3887EEC33}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{3CA7331E-F8AB-4A86-A869-D1D9EADD1E94}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3CA7331E-F8AB-4A86-A869-D1D9EADD1E94}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3CA7331E-F8AB-4A86-A869-D1D9EADD1E94}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C7117EF-1B70-4C56-AA5E-768B45A59E50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C7117EF-1B70-4C56-AA5E-768B45A59E50}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C7117EF-1B70-4C56-AA5E-768B45A59E50}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C7117EF-1B70-4C56-AA5E-768B45A59E50}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1D5E314-EEA3-4EF4-AC55-24D3887EEC33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1D5E314-EEA3-4EF4-AC55-24D3887EEC33}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1D5E314-EEA3-4EF4-AC55-24D3887EEC33}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1D5E314-EEA3-4EF4-AC55-24D3887EEC33}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

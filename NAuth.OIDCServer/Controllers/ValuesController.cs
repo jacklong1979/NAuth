@@ -3,12 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using NAuth.OIDCServer.Common;
 
 namespace NAuth.OIDCServer.Controllers
 {
     [Route("api/[controller]")]
     public class ValuesController : Controller
     {
+        TokenConfig TokenConfig;
+        public ValuesController(IOptions<TokenConfig> setting)
+        {
+            TokenConfig = setting.Value;
+        }
         // GET api/values
         [HttpGet]
         public IEnumerable<string> Get()

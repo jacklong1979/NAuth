@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace NAuth.ResourceServer.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     public class ValuesController : Controller
     {
@@ -20,7 +22,7 @@ namespace NAuth.ResourceServer.Controllers
         [HttpGet("{id}")]
         public string Get(int id)
         {
-            return "value";
+            return "验证通过";
         }
 
         // POST api/values

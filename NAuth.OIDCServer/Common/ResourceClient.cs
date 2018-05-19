@@ -86,7 +86,7 @@ namespace NAuth.OIDCServer.Common
                     ClientId="Client",//注意：客户端不能包含重复ID
                     AllowedGrantTypes=GrantTypes.ClientCredentials, // 没有交互性用户，使用 clientid/secret 实现认证。client credentials模式则不需要对账号密码验证
                     ClientSecrets={new Secret(_TokenConfig.Secret.Sha256())},
-                    AccessTokenLifetime=10,
+                    AccessTokenLifetime=_TokenConfig.ExpiresIn,
                     AllowedScopes={ _TokenConfig.Scope }//  // 客户端有权访问的范围（Scopes）
                 },
                new Client
@@ -97,7 +97,7 @@ namespace NAuth.OIDCServer.Common
                     AllowedGrantTypes = GrantTypes.ClientCredentials,
 	                // 用于认证的密码
                      ClientSecrets = {new Secret(_TokenConfig.Secret.Sha256())},
-                     AccessTokenLifetime=10,
+                     AccessTokenLifetime=_TokenConfig.ExpiresIn,
                      AccessTokenType =AccessTokenType.Jwt,
 	                // 客户端有权访问的范围（Scopes）
                     AllowedScopes = { _TokenConfig.Scope }
@@ -107,10 +107,10 @@ namespace NAuth.OIDCServer.Common
                     ClientId ="Client3",//注意：客户端不能包含重复ID
                     AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
                     AccessTokenType = AccessTokenType.Jwt,
-                    AccessTokenLifetime = 20,
-                    IdentityTokenLifetime = 10,
+                    AccessTokenLifetime = _TokenConfig.ExpiresIn,
+                    IdentityTokenLifetime = _TokenConfig.ExpiresIn,
                     UpdateAccessTokenClaimsOnRefresh = true,
-                    SlidingRefreshTokenLifetime = 30,
+                    SlidingRefreshTokenLifetime = _TokenConfig.ExpiresIn,
                     AllowOfflineAccess = true,
                     RefreshTokenExpiration = TokenExpiration.Absolute,
                     RefreshTokenUsage = TokenUsage.OneTimeOnly,

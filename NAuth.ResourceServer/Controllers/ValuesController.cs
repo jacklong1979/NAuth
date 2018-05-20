@@ -22,6 +22,7 @@ namespace NAuth.ResourceServer.Controllers
         [HttpGet("{id}")]
         public string Get(int id)
         {
+            var useer = User.Identity;
             return "验证通过";
         }
 

@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using NAuth.OIDCServer.Common;
 namespace NAuth.OIDCServer
 {
@@ -28,7 +31,7 @@ namespace NAuth.OIDCServer
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //读取配置信息
+            #region 读取配置信息
             var tokenSection = this.Configuration.GetSection("TokenConfig");
             var obj= services.Configure<TokenConfig>(tokenSection);
 
@@ -38,7 +41,8 @@ namespace NAuth.OIDCServer
                     TokenConfig = setting.Value;
                 }
              */
-            #region
+            #endregion  
+            #region 客户端，密码模式
             ResourceClient.GetTokenConfig(tokenSection);//初始化配置文件
             services.AddIdentityServer()
                 .AddDeveloperSigningCredential()
@@ -67,6 +71,55 @@ namespace NAuth.OIDCServer
             //    ;
 
             #endregion
+            #region 【方式1】JwtRegisteredClaimNames 方式 直接读取配置文件信息，初始化Token 需要验证的信息,如果不同在一台服务，则产生的Token与验证的Token的服务器验证信息与产生的信息要一致
+            
+            var symmetricKeyAsBase64 = tokenSection["Secret"];
+            var keyByteArray = Encoding.ASCII.GetBytes(symmetricKeyAsBase64);
+            var signingKey = new SymmetricSecurityKey(keyByteArray);
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                #region 下面三个参数是必须
+                // 签名秘钥
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = signingKey,
+                // 发行者(颁发机构)
+                ValidateIssuer = true,
+                ValidIssuer = tokenSection["Issuer"],
+                // 令牌的观众(颁发给谁)
+                ValidateAudience = true,
+                ValidAudience = tokenSection["Audience"],
+                #endregion
+                // 是否验证Token有效期
+                ValidateLifetime = true,
+                ClockSkew = TimeSpan.Zero
+                /***********************************TokenValidationParameters的参数默认值***********************************/
+                // RequireSignedTokens = true,
+                // SaveSigninToken = false,
+                // ValidateActor = false,
+                // 将下面两个参数设置为false，可以不验证Issuer和Audience，但是不建议这样做。
+                // ValidateAudience = true,
+                // ValidateIssuer = true, 
+                // ValidateIssuerSigningKey = false,
+                // 是否要求Token的Claims中必须包含Expires
+                // RequireExpirationTime = true,
+                // 允许的服务器时间偏移量
+                // ClockSkew = TimeSpan.FromSeconds(300),//TimeSpan.Zero
+                // 是否验证Token有效期，使用当前时间与Token的Claims中的NotBefore和Expires对比
+                // ValidateLifetime = true
+            };
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(o =>
+            {
+                //不使用https
+                //o.RequireHttpsMetadata = false;
+                o.TokenValidationParameters = tokenValidationParameters;
+            });
+            #endregion
+
             services.AddMvc();
            
         }

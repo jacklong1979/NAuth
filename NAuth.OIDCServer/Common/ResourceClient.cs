@@ -72,13 +72,11 @@ namespace NAuth.OIDCServer.Common
             return new List<Client>
             {
                 /*
-                授权码模式（authorization_code）
-
-                简化模式（implicit）
-
-                密码模式（password）
-
-                客户端模式（client_credentials）
+                客户端模式（Client Credentials）：和用户无关，用于应用程序与 API 资源的直接交互场景。
+                密码模式（resource owner password credentials）：和用户有关，一般用于第三方登录。
+                简化模式-With OpenID（implicit grant type）：仅限 OpenID 认证服务，用于第三方用户登录及获取用户信息，不包含授权。
+                简化模式-With OpenID & OAuth（JS 客户端调用）：包含 OpenID 认证服务和 OAuth 授权，但只针对 JS 调用（URL 参数获取），一般用于前端或无线端。
+                混合模式-With OpenID & OAuth（Hybrid Flow）：推荐使用，包含 OpenID 认证服务和 OAuth 授权，但针对的是后端服务调用。
                 */
                 #region 授权中心配置,可以增加多个不同的 Client
               new Client

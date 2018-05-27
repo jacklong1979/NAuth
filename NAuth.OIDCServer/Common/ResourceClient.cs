@@ -59,7 +59,18 @@ namespace NAuth.OIDCServer.Common
                 new ApiResource("wiz","my wiz")
             };
         }
-
+        /// <summary>
+        /// OIDC : OpenID Connect implicit flow client (MVC)
+        /// </summary>
+        /// <returns></returns>
+        public static IEnumerable<IdentityResource> GetIdentityResources()
+        {
+            return new List<IdentityResource>
+            {
+                new IdentityResources.OpenId(),
+                new IdentityResources.Profile()
+            };
+        }
         /// <summary>
         /// 客户端注册，客户端能够访问的资源（通过：AllowedScopes）
         /// </summary>
@@ -153,7 +164,8 @@ namespace NAuth.OIDCServer.Common
                         IdentityServerConstants.StandardScopes.Profile,
                         "UserApi"
                     },
-                    AllowOfflineAccess = true
+                    AllowOfflineAccess = true,//AllowOfflineAccess. 我们还需要获取Refresh Token, 这就要求我们的网站必须可以"离线"工作, 这里离线是指用户和网站之间断开了, 并不是指网站离线了.这就是说网站可以使用token来和api进行交互, 而不需要用户登陆到网站上
+                    AlwaysIncludeUserClaimsInIdToken=true //包含用户和token信息
                 },
                    // JavaScript Client
                 new Client

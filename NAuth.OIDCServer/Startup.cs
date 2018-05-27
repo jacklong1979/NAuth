@@ -31,6 +31,18 @@ namespace NAuth.OIDCServer
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            #region 跨域
+            services.AddCors(options =>
+            {
+                // this defines a CORS policy called "default"
+                options.AddPolicy("default", policy =>
+                {
+                    policy.WithOrigins("http://localhost:2000")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                });
+            });
+            #endregion
             #region 读取配置信息
             var tokenSection = this.Configuration.GetSection("TokenConfig");
             var obj= services.Configure<TokenConfig>(tokenSection);
@@ -50,6 +62,7 @@ namespace NAuth.OIDCServer
                 .AddResourceAndClient(services)
                 .AddInMemoryApiResources(ResourceClient.GetApiResource())//添加api资源
                 .AddInMemoryClients(ResourceClient.GetClients())           //添加客户端   
+                .AddInMemoryIdentityResources(ResourceClient.GetIdentityResources())
                 .AddResourceOwnerValidator<ResourceOwnerPasswordValidator>();
 
             // .AddTestUsers(APIClient.GeTestUsers());//优化于上面的 ResourceOwnerPasswordValidator
@@ -131,6 +144,7 @@ namespace NAuth.OIDCServer
             {
                 app.UseDeveloperExceptionPage();
             }
+           
             app.UseIdentityServer();
             app.UseMvc();
         }
